@@ -859,11 +859,11 @@ function cardArt(card){
 
 /* ============ Real card artwork (Rider-Waite-Smith, public domain) via sprite sheets ============ */
 const SPRITES = {
-  major:     { url:'sprites/sprite-major.jpg', cols:5, rows:5 },
-  wands:     { url:'sprites/sprite-wands.jpg', cols:4, rows:4 },
-  cups:      { url:'sprites/sprite-cups.jpg', cols:4, rows:4 },
-  swords:    { url:'sprites/sprite-swords.jpg', cols:4, rows:4 },
-  pentacles: { url:'sprites/sprite-pentacles.jpg', cols:4, rows:4 },
+  major:     { url:'sprite-major.jpg', cols:5, rows:5 },
+  wands:     { url:'sprite-wands.jpg', cols:4, rows:4 },
+  cups:      { url:'sprite-cups.jpg', cols:4, rows:4 },
+  swords:    { url:'sprite-swords.jpg', cols:4, rows:4 },
+  pentacles: { url:'sprite-pentacles.jpg', cols:4, rows:4 },
 };
 function cardBgStyle(card){
   const sheet = SPRITES[card.suit];
