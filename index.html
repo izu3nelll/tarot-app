@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>タロット大全 — 78枚を読む</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#15131f;
+  --bg-panel:#1e1b2c;
+  --bg-panel-2:#252239;
+  --line:#3c3752;
+  --parchment:#ece3d0;
+  --parchment-dim:#d9cfb8;
+  --ink:#241f2e;
+  --ink-soft:#4a4360;
+  --gold:#c19a5b;
+  --gold-dim:#8d7443;
+  --muted:#a89fc4;
+  --muted-2:#7d759a;
+  --major:#c19a5b;
+  --wands:#c06a3d;
+  --cups:#4a7ea6;
+  --swords:#8a8d97;
+  --pentacles:#6c8a52;
+  --danger:#b85c5c;
+  --good:#6c9a6c;
+  --radius-card: 18px;
+  color-scheme: dark;
+  box-sizing:border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+*{box-sizing:inherit;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+html,body{height:100%;}
+body{
+  margin:0;
+  min-height:100%;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(193,154,91,0.10), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(74,126,166,0.10), transparent 55%),
+    var(--bg-deep);
+  color:var(--parchment);
+  font-family:'Zen Kaku Gothic New', sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--gold); color:var(--ink);}
+::-webkit-scrollbar{width:10px; height:10px;}
+::-webkit-scrollbar-thumb{background:var(--line); border-radius:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+a{color:inherit;}
+button{font-family:inherit;}
+
+.wrap{
+  max-width: 980px;
+  margin:0 auto;
+  padding: 28px 20px 64px;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:6px;
+  padding: 6px 0 30px;
+}
+.masthead .eyebrow{
+  font-size:12.5px;
+  letter-spacing:0.14em;
+  color:var(--muted-2);
+}
+.masthead h1{
+  font-family:'Shippori Mincho', serif;
+  font-weight:700;
+  font-size: clamp(30px, 6vw, 44px);
+  margin: 2px 0 4px;
+  letter-spacing:0.04em;
+  background: linear-gradient(180deg, #f2e6c8, var(--gold) 70%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.masthead p{
+  margin:0;
+  color:var(--muted);
+  font-size:14.5px;
+  max-width:46ch;
+  line-height:1.7;
+}
+.masthead .rule{
+  width:64px;
+  height:1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  margin-top:14px;
+}
+
+/* ---------- Mode tabs ---------- */
+.tabs{
+  display:flex;
+  gap:6px;
+  justify-content:center;
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px;
+  margin: 0 auto 20px;
+  width:fit-content;
+  max-width:100%;
+}
+.tab{
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  padding:9px 18px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition: color .18s ease, background .18s ease;
+  white-space:nowrap;
+}
+.tab.active{
+  background: linear-gradient(180deg, #d8b578, var(--gold-dim));
+  color:#241d10;
+}
+.tab:not(.active):hover{ color:var(--parchment); }
+
+/* ---------- Suit filter ---------- */
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  margin-bottom:26px;
+}
+.chip{
+  border:1px solid var(--line);
+  background:var(--bg-panel);
+  color:var(--muted);
+  padding:7px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex; align-items:center; gap:6px;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.chip .dot{ width:7px; height:7px; border-radius:50%; background:var(--dotc,var(--muted)); }
+.chip.active{ color:var(--ink); border-color:transparent; background:var(--dotc,var(--gold)); }
+.chip:not(.active):hover{ border-color: var(--dotc, var(--gold-dim)); color:var(--parchment); }
+
+/* ---------- view panels ---------- */
+.view{ display:none; }
+.view.active{ display:block; }
+
+/* ================= BROWSE (list) ================= */
+.progress-line{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  color:var(--muted-2); font-size:12.5px; margin-bottom:18px;
+}
+.progress-line b{ color:var(--gold); font-weight:700; }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(128px,1fr));
+  gap:14px;
+}
+.tile{
+  perspective:1000px;
+  aspect-ratio: 100/226;
+  cursor:pointer;
+}
+.tile-inner{
+  position:relative;
+  width:100%; height:100%;
+  transform-style:preserve-3d;
+  transition: transform .55s cubic-bezier(.2,.8,.2,1);
+}
+.tile.flipped .tile-inner{ transform: rotateY(180deg); }
+.tile-face{
+  position:absolute; inset:0;
+  backface-visibility:hidden;
+  border-radius: var(--radius-card);
+  border:1px solid var(--suitc, var(--gold-dim));
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+.tile-front{
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.06), transparent 60%),
+    linear-gradient(155deg, var(--bg-panel-2), var(--bg-panel));
+  align-items:stretch; justify-content:flex-start;
+  padding:0;
+  gap:0;
+}
+.tile-front .illus{
+  width:100%; aspect-ratio: 260/457; flex-shrink:0;
+  background-color:rgba(0,0,0,0.15);
+  border-bottom:1px solid var(--suitc,var(--gold-dim));
+}
+.tile-front .cap{
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; padding:7px 6px 9px;
+}
+.tile-front .num{
+  font-family:'Shippori Mincho', serif;
+  font-size:12px; letter-spacing:.12em; color:var(--muted-2);
+}
+.tile-front .name{
+  font-family:'Shippori Mincho', serif;
+  font-size:14.5px; font-weight:700; text-align:center; line-height:1.3;
+  color:var(--parchment);
+}
+.tile-front .mastered-badge{
+  position:absolute; top:8px; right:8px;
+  width:18px; height:18px; border-radius:50%;
+  background:var(--good); display:none; align-items:center; justify-content:center;
+  font-size:11px; color:#0d1a0d; font-weight:900;
+}
+.tile.mastered .mastered-badge{ display:flex; }
+
+.tile-back{
+  transform: rotateY(180deg);
+  background: var(--parchment);
+  color:var(--ink);
+  padding:12px 12px 10px;
+  display:flex; flex-direction:column;
+  font-size:11.5px;
+}
+.tile-back .bname{
+  font-family:'Shippori Mincho', serif; font-weight:700; font-size:13.5px;
+  border-bottom:1px solid rgba(36,31,46,0.15); padding-bottom:6px; margin-bottom:6px;
+  color:var(--ink);
+}
+.tile-back .sec{ margin-bottom:6px; }
+.tile-back .lbl{
+  font-size:9.5px; font-weight:900; letter-spacing:.08em;
+  display:inline-block; padding:1px 6px; border-radius:5px; margin-bottom:3px;
+}
+.tile-back .lbl.up{ background:rgba(108,154,108,0.25); color:#2c4a2c; }
+.tile-back .lbl.rev{ background:rgba(184,92,92,0.2); color:#5c2c2c; }
+.tile-back .kw{ line-height:1.5; color:var(--ink-soft); }
+.tile-back .desc{ font-size:10.5px; line-height:1.45; color:var(--ink-soft); margin-top:2px; }
+.tile-back .mk-btn{
+  margin-top:auto;
+  border:1px solid rgba(36,31,46,0.25);
+  background:transparent; color:var(--ink);
+  font-size:10.5px; font-weight:700; padding:5px 8px; border-radius:8px; cursor:pointer;
+}
+.tile.mastered .tile-back .mk-btn{ background:var(--good); border-color:var(--good); color:#0d1a0d; }
+
+/* ================= FLASHCARD ================= */
+.fc-wrap{
+  display:flex; flex-direction:column; align-items:center; gap:22px;
+}
+.fc-stagearea{ width:100%; max-width:340px; }
+.fc-stage{
+  perspective:1400px;
+  width:100%;
+  aspect-ratio: 3/5.3;
+  cursor:pointer;
+}
+.fc-inner{
+  position:relative; width:100%; height:100%;
+  transform-style:preserve-3d;
+  transition: transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.fc-stage.flipped .fc-inner{ transform: rotateY(180deg); }
+.fc-face{
+  position:absolute; inset:0;
+  border-radius:22px;
+  backface-visibility:hidden;
+  border:1.5px solid var(--suitc,var(--gold));
+  box-shadow: 0 24px 50px -20px rgba(0,0,0,0.6);
+}
+.fc-front{
+  background:
+    radial-gradient(circle at 50% 25%, rgba(255,255,255,0.07), transparent 55%),
+    linear-gradient(160deg, var(--bg-panel-2), var(--bg-panel));
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; padding:20px;
+}
+.fc-front .illus{
+  width:56%; max-width:190px; aspect-ratio: 260/457;
+  border-radius:8px;
+  box-shadow: 0 10px 24px -8px rgba(0,0,0,0.5);
+  margin-bottom:2px;
+}
+.fc-front .frame{
+  position:absolute; inset:14px;
+  border:1px solid rgba(193,154,91,0.35);
+  border-radius:14px;
+  pointer-events:none;
+}
+.fc-front .frame::before, .fc-front .frame::after{
+  content:''; position:absolute; width:7px; height:7px; border-radius:50%;
+  background:var(--suitc,var(--gold)); opacity:.7;
+}
+.fc-front .frame::before{ top:-4px; left:-4px; }
+.fc-front .frame::after{ bottom:-4px; right:-4px; }
+.fc-front .arcana-tag{
+  font-size:11px; letter-spacing:.14em; color:var(--muted-2);
+}
+.fc-front .num-big{
+  font-family:'Shippori Mincho', serif;
+  font-size:15px; color:var(--suitc, var(--gold));
+  letter-spacing:.1em;
+}
+.fc-front .name-big{
+  font-family:'Shippori Mincho', serif;
+  font-weight:700; font-size: clamp(22px,5vw,28px);
+  text-align:center; color:var(--parchment);
+}
+.fc-front .hint{
+  font-size:11.5px; color:var(--muted-2); margin-top:4px;
+}
+.fc-back{
+  transform: rotateY(180deg);
+  background: var(--parchment);
+  color:var(--ink);
+  padding:22px 22px 18px;
+  display:flex; flex-direction:column;
+  overflow-y:auto;
+}
+.fc-back .bname{
+  font-family:'Shippori Mincho', serif; font-weight:700; font-size:19px;
+  margin-bottom:12px; border-bottom:1px solid rgba(36,31,46,0.18); padding-bottom:10px;
+}
+.fc-back .block{ margin-bottom:12px; }
+.fc-back .lbl{
+  font-size:11px; font-weight:900; letter-spacing:.09em;
+  padding:2px 8px; border-radius:6px; display:inline-block; margin-bottom:6px;
+}
+.fc-back .lbl.up{ background:rgba(108,154,108,0.28); color:#264226; }
+.fc-back .lbl.rev{ background:rgba(184,92,92,0.22); color:#552626; }
+.fc-back .kw{ font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.6; }
+.fc-back .desc{ font-size:12.5px; color:var(--ink-soft); line-height:1.6; margin-top:3px; }
+
+.fc-controls{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center;
+}
+.btn{
+  border:1px solid var(--line);
+  background:var(--bg-panel);
+  color:var(--parchment);
+  padding:10px 16px;
+  border-radius:12px;
+  font-size:13.5px; font-weight:700;
+  cursor:pointer;
+  display:inline-flex; align-items:center; gap:6px;
+  transition: border-color .15s ease, transform .1s ease, background .15s ease;
+}
+.btn:hover{ border-color:var(--gold-dim); }
+.btn:active{ transform: scale(0.97); }
+.btn.primary{
+  background: linear-gradient(180deg, #d8b578, var(--gold-dim));
+  color:#241d10; border-color:transparent;
+}
+.btn.ghost{ background:transparent; }
+.btn.small{ padding:7px 12px; font-size:12.5px; }
+.btn.good{ background:rgba(108,154,108,0.2); border-color:var(--good); color:#bfe3bf;}
+.btn:disabled{ opacity:.4; cursor:default; }
+
+.fc-meta{ display:flex; gap:14px; color:var(--muted-2); font-size:12px; }
+.fc-meta b{ color:var(--gold); }
+
+/* ================= QUIZ ================= */
+.quiz-wrap{ max-width:560px; margin:0 auto; }
+.quiz-top{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:18px; flex-wrap:wrap; gap:10px;
+}
+.score-pill{
+  display:flex; gap:14px; background:var(--bg-panel); border:1px solid var(--line);
+  border-radius:12px; padding:8px 16px; font-size:13px; color:var(--muted);
+}
+.score-pill b{ color:var(--parchment); font-size:14px; }
+.quiz-card{
+  background: linear-gradient(160deg, var(--bg-panel-2), var(--bg-panel));
+  border:1.5px solid var(--suitc, var(--line));
+  border-radius:20px;
+  padding:24px 24px 22px;
+  text-align:center;
+  margin-bottom:20px;
+}
+.quiz-card .qillus{
+  width:120px; max-width:32%; aspect-ratio:260/457; margin:0 auto 14px;
+  border-radius:8px; box-shadow:0 10px 22px -8px rgba(0,0,0,0.55);
+}
+.quiz-card .qkicker{ font-size:12px; letter-spacing:.1em; color:var(--muted-2); margin-bottom:10px;}
+.quiz-card .qname{
+  font-family:'Shippori Mincho', serif; font-weight:700;
+  font-size: clamp(22px,5vw,28px);
+  color:var(--parchment);
+}
+.quiz-card .qsub{ margin-top:8px; font-size:13px; color:var(--suitc,var(--gold)); font-weight:700; }
+.options{
+  display:grid; gap:10px;
+}
+.opt{
+  text-align:left;
+  border:1px solid var(--line);
+  background:var(--bg-panel);
+  color:var(--parchment);
+  padding:13px 16px;
+  border-radius:12px;
+  font-size:14px;
+  cursor:pointer;
+  transition: border-color .15s, background .15s;
+}
+.opt:hover{ border-color:var(--gold-dim); }
+.opt.correct{ background:rgba(108,154,108,0.22); border-color:var(--good); color:#d8f0d8;}
+.opt.wrong{ background:rgba(184,92,92,0.22); border-color:var(--danger); color:#f0d8d8; }
+.opt:disabled{ cursor:default; }
+.quiz-feedback{
+  min-height:28px;
+  text-align:center;
+  font-size:13.5px;
+  color:var(--muted);
+  margin: 14px 0 4px;
+}
+.quiz-feedback .desc-line{ color:var(--muted-2); font-size:12.5px; display:block; margin-top:4px;}
+.quiz-actions{ display:flex; justify-content:center; gap:10px; }
+
+footer{
+  text-align:center; color:var(--muted-2); font-size:11.5px; margin-top:50px; line-height:1.8;
+}
+
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    /* keep the mystical dark theme intentionally regardless of system scheme */
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="eyebrow">RIDER–WAITE TRADITION · 78 CARDS</div>
+    <h1>タロット大全</h1>
+    <p>大アルカナ22枚・小アルカナ56枚。意味を眺め、フラッシュカードで覚え、クイズで確かめる。</p>
+    <div class="rule"></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-view="browse">一覧</button>
+    <button class="tab" data-view="flash">フラッシュカード</button>
+    <button class="tab" data-view="quiz">クイズ</button>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <!-- ===== BROWSE ===== -->
+  <section class="view active" id="view-browse">
+    <div class="progress-line" id="browse-progress"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- ===== FLASHCARD ===== -->
+  <section class="view" id="view-flash">
+    <div class="fc-wrap">
+      <div class="fc-meta">
+        <span>残り <b id="fc-remaining">0</b> 枚</span>
+        <span>習得済み <b id="fc-mastered">0</b> / 78</span>
+      </div>
+      <div class="fc-stagearea">
+        <div class="fc-stage" id="fc-stage">
+          <div class="fc-inner">
+            <div class="fc-face fc-front" id="fc-front">
+              <div class="frame"></div>
+              <div class="arcana-tag" id="fc-tag">MAJOR ARCANA</div>
+              <div class="illus" id="fc-illus"></div>
+              <div class="num-big" id="fc-num">0</div>
+              <div class="name-big" id="fc-name">愚者</div>
+              <div class="hint">タップして意味を見る</div>
+            </div>
+            <div class="fc-face fc-back" id="fc-back"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-controls">
+        <button class="btn ghost" id="fc-prev">← 前へ</button>
+        <button class="btn" id="fc-shuffle">🔀 シャッフル</button>
+        <button class="btn good" id="fc-master">✓ 覚えた</button>
+        <button class="btn primary" id="fc-next">次へ →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="view" id="view-quiz">
+    <div class="quiz-wrap">
+      <div class="quiz-top">
+        <div class="score-pill">
+          <span>正解 <b id="q-correct">0</b></span>
+          <span>出題 <b id="q-total">0</b></span>
+          <span>正答率 <b id="q-rate">–</b></span>
+        </div>
+        <button class="btn small ghost" id="q-reset">スコアをリセット</button>
+      </div>
+      <div class="quiz-card">
+        <div class="qillus" id="q-illus"></div>
+        <div class="qkicker" id="q-kicker">このカードのキーワードは？</div>
+        <div class="qname" id="q-name">愚者</div>
+        <div class="qsub" id="q-sub">正位置</div>
+      </div>
+      <div class="options" id="q-options"></div>
+      <div class="quiz-feedback" id="q-feedback"></div>
+      <div class="quiz-actions">
+        <button class="btn primary" id="q-next" style="display:none;">次の問題 →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>78枚を静かに、繰り返し。 — タロット大全</footer>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const SUITS = {
+  major:      { label:'大アルカナ', color:'#c19a5b' },
+  wands:      { label:'ワンド',     color:'#c06a3d' },
+  cups:       { label:'カップ',     color:'#4a7ea6' },
+  swords:     { label:'ソード',     color:'#8a8d97' },
+  pentacles:  { label:'ペンタクル', color:'#6c8a52' },
+};
+
+const MAJOR = [
+["愚者","新しい始まり,自由,冒険心","しがらみのない自由な心で、未知の一歩を踏み出すとき。","向こう見ず,準備不足,迷走","勢いだけで動いて計画性を欠き、足元をすくわれる恐れ。"],
+["魔術師","創造力,意志,才能の発揮","持てる力と道具をすべて使い、意図を形にできるとき。","空回り,自信過剰,才能の誤用","力はあっても使い方を誤り、成果に結びつかない。"],
+["女教皇","直感,静けさ,内なる知恵","言葉にならない感覚を信じ、静かに内側を見つめるとき。","表面的な理解,秘密,直感の遮断","本質を見誤ったり、大切な情報が隠されている状態。"],
+["女帝","豊かさ,母性,創造","愛情と豊かさに包まれ、何かが実り育っていく時期。","過保護,停滞,自己犠牲","与えすぎて疲弊したり、成長が滞っている状態。"],
+["皇帝","権威,秩序,安定した基盤","明確なルールと責任感で、物事をしっかり統率するとき。","支配的,頑固,統制の乱れ","力で押さえつけようとして反発を招く、または秩序が崩れる。"],
+["教皇","伝統,教え,精神的指導","確立された知恵や制度から学び、導きを得るとき。","型にはまる,反抗,独自路線","慣習に縛られる息苦しさ、あるいはそこからの脱却。"],
+["恋人","愛,調和,価値観の一致","心から惹かれ合う関係、あるいは重要な選択のとき。","すれ違い,誘惑,不誠実","価値観のズレや、決断を誤ってしまう危うさ。"],
+["戦車","前進,意志力,勝利","強い意志で困難を乗り越え、目標に突き進む勢い。","迷走,制御不能,方向性の喪失","勢いはあっても向かう先を見失っている状態。"],
+["力","内なる力,勇気,忍耐","力で押すのではなく、優しさと粘り強さで乗り越える。","自信喪失,無力感,感情の暴走","自分を信じきれず、弱さに飲み込まれてしまう。"],
+["隠者","内省,探求,一人の時間","喧騒を離れ、自分自身と向き合い答えを探すとき。","孤立,頑なさ,引きこもり","一人の時間が孤独感や頑固さに変わってしまう。"],
+["運命の輪","転機,巡り合わせ,変化","状況が大きく動き出し、流れが変わっていくとき。","停滞,悪い巡り合わせ,抵抗","望まない方向への変化、あるいは流れの停滞。"],
+["正義","公正,均衡,因果","偏りのない判断と、これまでの行いに見合った結果。","不公平,偏った判断,責任逃れ","一方的な見方や、けじめのつかない状態。"],
+["吊るされた男","視点の転換,手放し,停止","あえて動かず、物事を違う角度から見つめ直すとき。","無益な我慢,停滞の長期化,犠牲","意味のない忍耐を続け、状況が動かない。"],
+["死神","終わり,転換,再生への準備","ひとつの区切りを迎え、新しい段階へ移るとき。","変化への抵抗,執着,停滞","終わるべきものにしがみつき、前に進めない。"],
+["節制","調和,バランス,統合","異なる要素をうまく組み合わせ、ちょうどよく整える。","不調和,過不足,対立","バランスが崩れ、物事がうまく噛み合わない。"],
+["悪魔","執着,束縛,欲望","目先の快楽や依存に囚われ、抜け出しにくい状態。","解放,自覚,束縛からの脱却","縛られていたものに気づき、そこから抜け出そうとする。"],
+["塔","崩壊,突発的な変化,衝撃","積み上げてきた前提が、急激に崩れ去る出来事。","危機の回避,変化への恐れ,小規模な崩壊","大きな崩壊は免れるが、不安定さは残る。"],
+["星","希望,癒し,信頼","傷ついた心が癒え、静かな希望が見えてくるとき。","失望,自信喪失,見通しの悪さ","希望が持てず、先行きに不安を感じる状態。"],
+["月","不安,潜在意識,幻惑","はっきりしない不安や、無意識からのメッセージ。","不安の解消,真実の露見,混乱の収束","隠れていた不安や誤解が、少しずつ晴れていく。"],
+["太陽","成功,喜び,明るい未来","迷いのない、明快で満ち足りた幸福感。","一時的な曇り,過信,見通しの甘さ","喜びに影が差したり、楽観が過ぎる状態。"],
+["審判","覚醒,再生,呼びかけ","これまでの経験を経て、新しい自分に目覚めるとき。","自己否定,決断の先送り,後悔","大切な呼びかけを無視したり、自分を責め続ける。"],
+["世界","完成,統合,達成","ひとつのサイクルが満ち、大きな達成を迎える。","未完成,中途半端,足踏み","あと一歩のところで完結せず、足踏みが続く。"],
+];
+
+const MINOR = {
+  wands: [
+    ["新しい情熱の芽生え,ひらめき,可能性","意欲の空回り,遅れ,消えかけた情熱"],
+    ["計画,将来への展望,決断","優柔不断,計画倒れ,視野の狭さ"],
+    ["拡大,見通し,協力の実り","見通しの甘さ,障害,焦り"],
+    ["安定,祝福,一区切り","不安定な基盤,足並みの乱れ,遅れ"],
+    ["競争,ぶつかり合い,切磋琢磨","争いの回避,内輪もめ,消耗"],
+    ["勝利,評価,自信","慢心,評価の遅れ,見せかけの勝利"],
+    ["踏ん張り,防戦,信念を貫く","防戦一方,圧倒される,弱気"],
+    ["急展開,スピード,動き出し","停滞,足止め,見込み違いの遅れ"],
+    ["粘り強さ,用心深さ,底力","疲弊,頑なさ,過度な警戒"],
+    ["重荷,責任過多,やり遂げる直前","荷下ろし,限界,責任放棄"],
+    ["好奇心,挑戦意欲,新しい情報","計画性のなさ,悪い知らせ,空回り"],
+    ["情熱的な行動,冒険,勢い","性急さ,無鉄砲,尻切れ"],
+    ["自信,社交性,情熱の体現","意地っ張り,嫉妬,自己中心"],
+    ["リーダーシップ,ビジョン,決断力","独裁,短気,見栄"],
+  ],
+  cups: [
+    ["新しい感情,満たされる心,愛の芽生え","感情の抑圧,満たされなさ,空虚感"],
+    ["心の結びつき,相互理解,調和","すれ違い,関係の不均衡,誤解"],
+    ["喜びの共有,友情,祝いごと","過度な享楽,三角関係,孤立"],
+    ["無関心,物思い,停滞","動き出し,新しい関心,停滞からの脱却"],
+    ["喪失感,後悔,悲しみ","立ち直り,受容,希望の芽生え"],
+    ["懐かしさ,思い出,純粋な喜び","過去への執着,現実逃避,幼さ"],
+    ["選択肢の多さ,空想,迷い","迷いからの決断,幻想の解消,現実直視"],
+    ["見切りをつける,探求の旅,手放し","未練,中途半端な決別,現状維持"],
+    ["満足,願望成就,心の充足","自己満足,見せかけの豊かさ,物質への執着"],
+    ["幸福な調和,家庭円満,充足感","理想と現実のズレ,不和,崩れる調和"],
+    ["感受性,素直な心,新しい知らせ","感情の未熟さ,思い込み,悪い知らせ"],
+    ["ロマンチックな行動,誘い,理想の追求","気まぐれ,口先だけ,誠実さの欠如"],
+    ["深い共感,優しさ,包容力","感情的な依存,過干渉,不安定さ"],
+    ["落ち着いた共感力,感情のコントロール,寛容","感情の抑圧,冷淡,操作的な態度"],
+  ],
+  swords: [
+    ["明晰な思考,突破口,真実","混乱,誤った判断,曖昧さ"],
+    ["膠着状態,均衡,判断の保留","決断を迫られる状況,情報過多,緊張"],
+    ["心の痛み,別離,深い悲しみ","痛みからの回復,許し,癒えていく心"],
+    ["休息,立て直し,一時停止","焦り,休めない状態,再開の兆し"],
+    ["対立,勝ち負けへのこだわり,後味の悪さ","わだかまりの解消,和解,痛み分け"],
+    ["過渡期,困難からの移行,落ち着き先","未練,抜け出せない状況,停滞"],
+    ["抜け駆け,戦略,ごまかし","発覚,隠しごとの限界,自滅"],
+    ["身動きの取れなさ,思考の縛り,無力感","思い込みからの解放,視野が開ける,突破"],
+    ["不安,心配事,眠れぬ夜","不安の緩和,悩みの整理,光が見える"],
+    ["行き詰まり,終焉,どん底","再起,最悪期の終わり,立ち直りの兆し"],
+    ["好奇心旺盛な思考,情報収集,用心深さ","早とちり,詮索,悪意ある噂"],
+    ["迅速な行動,直進,議論好き","性急な決断,無鉄砲,攻撃的な言動"],
+    ["冷静な判断,独立心,率直さ","辛辣さ,冷たさ,孤高すぎる態度"],
+    ["論理的な権威,公正な判断,知性","権威の濫用,冷酷さ,屁理屈"],
+  ],
+  pentacles: [
+    ["新しいチャンス,現実的な始まり,豊かさの種","好機を逃す,計画の甘さ,目先の欲"],
+    ["状況への対応力,バランス,優先順位","管理不足,混乱,無理な両立"],
+    ["技術,協力,着実な仕事","連携不足,質の低下,評価されない努力"],
+    ["安全志向,堅実な蓄え,現状維持","過度な執着,出し惜しみ,頑なな独占欲"],
+    ["困窮,孤立,経済的な不安","支援の到来,立て直し,不安からの回復"],
+    ["分かち合い,援助,公平な循環","一方的な施し,依存関係,不公平な取引"],
+    ["忍耐強い努力,見極めの時,成果待ち","焦り,努力不足,見込み違い"],
+    ["熟練,地道な鍛錬,職人気質","手抜き,集中力の欠如,中途半端な仕事"],
+    ["自立した豊かさ,余裕,自己充足","孤独な豊かさ,見栄,物質への依存"],
+    ["継承,安定した繁栄,家族の財産","相続争い,一時的な繁栄,基盤の揺らぎ"],
+    ["堅実な学び,新しい可能性,実務的な興味","計画倒れ,浪費,学びの中断"],
+    ["着実な前進,責任感,実直さ","停滞,融通のなさ,退屈な足踏み"],
+    ["現実的な思いやり,生活の充実,豊かな安心感","過保護,物質偏重,自分を後回しにしすぎる"],
+    ["経済的な成功,実務能力,安定した豊かさ","強欲,保守的すぎる姿勢,損得勘定"],
+  ],
+};
+
+const RANK_NAMES = ["エース","2","3","4","5","6","7","8","9","10","ペイジ","ナイト","クイーン","キング"];
+const RANK_NUM   = ["A","2","3","4","5","6","7","8","9","10","P","N","Q","K"];
+
+function buildCards(){
+  const cards = [];
+  MAJOR.forEach((m,i)=>{
+    cards.push({
+      id:'major-'+i, suit:'major', rankIdx:i, numLabel: toRoman(i), name:m[0],
+      up:m[1].split(','), updesc:m[2], rev:m[3].split(','), revdesc:m[4],
+    });
+  });
+  Object.keys(MINOR).forEach(suitKey=>{
+    MINOR[suitKey].forEach((entry,i)=>{
+      const rankName = RANK_NAMES[i];
+      const name = SUITS[suitKey].label + 'の' + rankName;
+      cards.push({
+        id:suitKey+'-'+i, suit:suitKey, rankIdx:i, numLabel: RANK_NUM[i], name,
+        up:entry[0].split(','), updesc:'', rev:entry[1].split(','), revdesc:'',
+      });
+    });
+  });
+  return cards;
+}
+function toRoman(n){
+  const table=['0','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'];
+  return table[n];
+}
+
+const CARDS = buildCards();
+
+/* ============ Suit glyph (small inline svg, and inner-only version for illustrations) ============ */
+const SUIT_INNER = {
+  wands: `<line x1="12" y1="34" x2="28" y2="6" stroke-width="2.6" stroke-linecap="round"/><path d="M20 12 C 24 10, 26 12, 24 16 C 22 14, 19 15, 20 12 Z" fill="currentColor" stroke="none"/><path d="M24 18 C 28 16, 30 18, 28 22 C 26 20, 23 21, 24 18 Z" fill="currentColor" stroke="none"/>`,
+  cups: `<path d="M10 8 H30 L27 22 C27 28 13 28 13 22 Z" stroke-width="2.2" stroke-linejoin="round"/><line x1="20" y1="28" x2="20" y2="33" stroke-width="2.2"/><line x1="13" y1="34" x2="27" y2="34" stroke-width="2.2" stroke-linecap="round"/>`,
+  swords: `<line x1="20" y1="4" x2="20" y2="30" stroke-width="2.6" stroke-linecap="round"/><line x1="13" y1="12" x2="27" y2="12" stroke-width="2.2" stroke-linecap="round"/><path d="M15 30 H25 L23 36 H17 Z" stroke-width="2" stroke-linejoin="round"/>`,
+  pentacles: `<circle cx="20" cy="20" r="15" stroke-width="2.2"/><path d="M20 8 L23.5 17.5 L33.5 17.5 L25.3 23.6 L28.4 33 L20 27 L11.6 33 L14.7 23.6 L6.5 17.5 L16.5 17.5 Z" stroke-width="1.8" stroke-linejoin="round"/>`,
+};
+const MAJOR_INNER = `<path d="M20 4 L23 16 L36 16 L25.5 23.5 L29.5 36 L20 28 L10.5 36 L14.5 23.5 L4 16 L17 16 Z" stroke-width="1.8" stroke-linejoin="round"/>`;
+function suitGlyph(suit, size=30){
+  const inner = suit==='major' ? MAJOR_INNER : SUIT_INNER[suit];
+  return `<svg width="${size}" height="${size}" viewBox="0 0 40 40" fill="none" stroke="currentColor">${inner}</svg>`;
+}
+function suitMini(suit, cx, cy, scale=0.45){
+  const inner = suit==='major' ? MAJOR_INNER : SUIT_INNER[suit];
+  return `<g transform="translate(${cx},${cy}) scale(${scale}) translate(-20,-20)">${inner}</g>`;
+}
+function wrapArt(inner){
+  return `<svg viewBox="0 0 100 132" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+}
+
+/* ---- pip layout for minor arcana 1-10 ---- */
+const PIP_POS = {
+  1:[[50,66]],
+  2:[[50,25],[50,107]],
+  3:[[50,18],[50,66],[50,114]],
+  4:[[32,25],[68,25],[32,107],[68,107]],
+  5:[[32,20],[68,20],[50,66],[32,112],[68,112]],
+  6:[[32,18],[68,18],[32,66],[68,66],[32,114],[68,114]],
+  7:[[32,15],[68,15],[50,38],[32,68],[68,68],[32,115],[68,115]],
+  8:[[30,15],[70,15],[30,46],[70,46],[30,86],[70,86],[30,117],[70,117]],
+  9:[[30,12],[70,12],[30,38],[70,38],[50,64],[30,90],[70,90],[30,116],[70,116]],
+  10:[[30,10],[70,10],[30,36],[70,36],[30,62],[70,62],[30,88],[70,88],[30,114],[70,114]],
+};
+function pipArt(suit, count){
+  const positions = PIP_POS[count] || [[50,66]];
+  const inner = positions.map(p=>suitMini(suit,p[0],p[1],0.42)).join('');
+  return wrapArt(inner);
+}
+
+/* ---- court card figures ---- */
+function courtArt(suit, rankIdx){
+  const item = suitMini(suit, 74, 68, 0.4);
+  if(rankIdx===10){ // Page
+    return wrapArt(`
+      <path d="M43 28 l7 -10 l7 10" />
+      <circle cx="50" cy="35" r="7"/>
+      <line x1="50" y1="42" x2="50" y2="90"/>
+      <line x1="50" y1="90" x2="43" y2="120"/><line x1="50" y1="90" x2="57" y2="120"/>
+      <line x1="50" y1="55" x2="68" y2="66"/>
+      <line x1="50" y1="55" x2="34" y2="62"/>
+      ${item}`);
+  }
+  if(rankIdx===11){ // Knight
+    return wrapArt(`
+      <ellipse cx="52" cy="98" rx="30" ry="11"/>
+      <line x1="28" y1="93" x2="16" y2="76"/><circle cx="14" cy="72" r="5"/><line x1="14" y1="67" x2="11" y2="59"/>
+      <line x1="34" y1="106" x2="31" y2="123"/><line x1="48" y1="108" x2="46" y2="125"/>
+      <line x1="62" y1="108" x2="65" y2="125"/><line x1="76" y1="103" x2="80" y2="120"/>
+      <circle cx="55" cy="62" r="7"/>
+      <line x1="55" y1="69" x2="55" y2="92"/>
+      <line x1="55" y1="74" x2="72" y2="52"/>
+      ${suitMini(suit,74,46,0.4)}`);
+  }
+  if(rankIdx===12){ // Queen
+    return wrapArt(`
+      <path d="M22 112 q28 16 56 0"/>
+      <path d="M43 38 l3 -8 l4 6 l4 -6 l3 8 Z"/>
+      <circle cx="50" cy="45" r="7"/>
+      <line x1="50" y1="52" x2="50" y2="96"/>
+      <line x1="50" y1="65" x2="68" y2="70"/>
+      <line x1="50" y1="65" x2="35" y2="80"/>
+      ${item}`);
+  }
+  // King
+  return wrapArt(`
+    <rect x="28" y="60" width="44" height="52" rx="4"/>
+    <path d="M40 38 l2 -8 l4 5 l4 -9 l4 9 l4 -5 l2 8 Z"/>
+    <circle cx="50" cy="45" r="7"/>
+    <line x1="50" y1="52" x2="50" y2="96"/>
+    <line x1="50" y1="65" x2="68" y2="70"/>
+    <line x1="50" y1="65" x2="35" y2="82"/><circle cx="33" cy="77" r="2.4" fill="currentColor" stroke="none"/>
+    ${item}`);
+}
+
+/* ---- major arcana scenes (simple line-art, one per card) ---- */
+const MAJOR_ART = [
+/*0 愚者*/ `<line x1="15" y1="95" x2="95" y2="95"/><line x1="15" y1="95" x2="5" y2="128"/>
+  <circle cx="80" cy="22" r="10"/>
+  <circle cx="35" cy="55" r="7"/><line x1="35" y1="62" x2="35" y2="85"/>
+  <line x1="35" y1="85" x2="22" y2="98"/><line x1="35" y1="85" x2="45" y2="95"/>
+  <line x1="35" y1="68" x2="48" y2="58"/><line x1="48" y1="58" x2="48" y2="38"/><circle cx="48" cy="34" r="4"/>
+  <path d="M14 95 q4 -9 10 0"/>`,
+/*1 魔術師*/ `<line x1="20" y1="100" x2="80" y2="100"/><line x1="30" y1="100" x2="30" y2="115"/><line x1="70" y1="100" x2="70" y2="115"/>
+  <circle cx="35" cy="93" r="4"/><line x1="45" y1="88" x2="45" y2="98"/><path d="M55 98 q5 -8 10 0"/>
+  <circle cx="50" cy="55" r="7"/><line x1="50" y1="62" x2="50" y2="85"/>
+  <line x1="50" y1="85" x2="43" y2="100"/><line x1="50" y1="85" x2="57" y2="100"/>
+  <line x1="50" y1="65" x2="32" y2="88"/><line x1="50" y1="65" x2="68" y2="35"/><circle cx="70" cy="30" r="3" fill="currentColor" stroke="none"/>
+  <path d="M42 40 q4 -6 8 0 q4 -6 8 0"/>`,
+/*2 女教皇*/ `<line x1="20" y1="40" x2="20" y2="112"/><line x1="80" y1="40" x2="80" y2="112"/>
+  <path d="M20 58 q30 16 60 0"/>
+  <circle cx="50" cy="55" r="7"/><line x1="50" y1="62" x2="50" y2="90"/>
+  <path d="M38 100 q12 -16 24 0"/>
+  <path d="M44 110 a6 6 0 1 0 0.1 0" fill="currentColor" stroke="none" opacity="0.55"/>`,
+/*3 女帝*/ `<path d="M25 100 q25 20 50 0"/>
+  <circle cx="50" cy="55" r="7"/><line x1="50" y1="62" x2="50" y2="92"/><path d="M36 92 q14 14 28 0"/>
+  <circle cx="42" cy="40" r="1.8" fill="currentColor" stroke="none"/><circle cx="50" cy="36" r="1.8" fill="currentColor" stroke="none"/><circle cx="58" cy="40" r="1.8" fill="currentColor" stroke="none"/>
+  <path d="M20 100 q0 -22 8 -34"/><path d="M80 100 q0 -22 -8 -34"/>`,
+/*4 皇帝*/ `<rect x="30" y="46" width="40" height="56" rx="3"/>
+  <circle cx="50" cy="55" r="7"/><line x1="50" y1="62" x2="50" y2="90"/>
+  <line x1="50" y1="70" x2="36" y2="80"/><line x1="50" y1="70" x2="64" y2="80"/><circle cx="64" cy="80" r="3"/>
+  <path d="M40 38 q-4 5 0 9"/><path d="M60 38 q4 5 0 9"/>`,
+/*5 教皇*/ `<circle cx="50" cy="44" r="7"/><path d="M44 33 L50 18 L56 33"/>
+  <line x1="50" y1="51" x2="50" y2="90"/>
+  <line x1="50" y1="60" x2="34" y2="68"/><line x1="34" y1="68" x2="30" y2="55"/>
+  <line x1="50" y1="62" x2="62" y2="72"/>
+  <circle cx="25" cy="96" r="4"/><line x1="25" y1="100" x2="25" y2="112"/>
+  <circle cx="75" cy="96" r="4"/><line x1="75" y1="100" x2="75" y2="112"/>`,
+/*6 恋人*/ `<circle cx="50" cy="22" r="10"/>
+  <circle cx="30" cy="55" r="7"/><line x1="30" y1="62" x2="30" y2="98"/><line x1="30" y1="70" x2="46" y2="64"/><line x1="30" y1="82" x2="20" y2="98"/><line x1="30" y1="82" x2="38" y2="98"/>
+  <circle cx="70" cy="55" r="7"/><line x1="70" y1="62" x2="70" y2="98"/><line x1="70" y1="70" x2="54" y2="64"/><line x1="70" y1="82" x2="80" y2="98"/><line x1="70" y1="82" x2="62" y2="98"/>`,
+/*7 戦車*/ `<rect x="30" y="68" width="40" height="26" rx="2"/>
+  <circle cx="35" cy="106" r="8"/><circle cx="65" cy="106" r="8"/>
+  <circle cx="50" cy="48" r="7"/><line x1="50" y1="55" x2="50" y2="70"/>
+  <line x1="42" y1="58" x2="30" y2="46"/><line x1="58" y1="58" x2="70" y2="46"/>
+  <path d="M12 94 l11 -22 l11 22 Z"/><path d="M66 94 l11 -22 l11 22 Z"/>`,
+/*8 力*/ `<path d="M18 82 a14 14 0 1 0 28 0 a14 14 0 1 0 -28 0" opacity="0.28" fill="currentColor" stroke="none"/>
+  <circle cx="30" cy="80" r="9"/><path d="M40 84 q20 6 26 -6"/>
+  <circle cx="58" cy="48" r="7"/><line x1="58" y1="55" x2="58" y2="92"/><line x1="58" y1="60" x2="38" y2="74"/>
+  <line x1="58" y1="70" x2="48" y2="88"/><line x1="58" y1="70" x2="68" y2="88"/>`,
+/*9 隠者*/ `<circle cx="52" cy="42" r="7"/><line x1="52" y1="49" x2="52" y2="98"/>
+  <line x1="52" y1="58" x2="30" y2="48"/><circle cx="26" cy="45" r="5"/><path d="M26 40 l0 -6"/><circle cx="26" cy="45" r="2" fill="currentColor" stroke="none"/>
+  <line x1="52" y1="70" x2="68" y2="105"/>
+  <line x1="52" y1="98" x2="44" y2="118"/><line x1="52" y1="98" x2="60" y2="118"/>`,
+/*10 運命の輪*/ `<circle cx="50" cy="70" r="32"/>
+  <line x1="50" y1="38" x2="50" y2="102"/><line x1="18" y1="70" x2="82" y2="70"/>
+  <line x1="27" y1="47" x2="73" y2="93"/><line x1="27" y1="93" x2="73" y2="47"/>
+  <circle cx="50" cy="70" r="4" fill="currentColor" stroke="none"/>`,
+/*11 正義*/ `<circle cx="50" cy="42" r="7"/><line x1="50" y1="49" x2="50" y2="98"/>
+  <line x1="50" y1="58" x2="28" y2="58"/><line x1="50" y1="58" x2="72" y2="58"/>
+  <line x1="28" y1="58" x2="28" y2="74"/><line x1="72" y1="58" x2="72" y2="74"/>
+  <path d="M20 74 q8 10 16 0"/><path d="M64 74 q8 10 16 0"/>
+  <line x1="60" y1="66" x2="74" y2="100"/>
+  <line x1="50" y1="98" x2="42" y2="118"/><line x1="50" y1="98" x2="58" y2="118"/>`,
+/*12 吊るされた男*/ `<line x1="18" y1="24" x2="82" y2="24"/><line x1="50" y1="24" x2="50" y2="42"/>
+  <circle cx="50" cy="92" r="7"/><line x1="50" y1="85" x2="50" y2="58"/>
+  <line x1="50" y1="58" x2="42" y2="42"/><path d="M50 63 q16 -4 11 -17"/>
+  <line x1="50" y1="68" x2="37" y2="73"/><line x1="50" y1="68" x2="63" y2="73"/>`,
+/*13 死神*/ `<path d="M35 108 L42 46 Q50 36 58 46 L65 108 Z"/>
+  <circle cx="50" cy="40" r="6"/>
+  <line x1="70" y1="30" x2="70" y2="92"/><path d="M70 30 q-16 0 -19 16"/>`,
+/*14 節制*/ `<path d="M42 42 q-11 -7 -15 2"/><path d="M58 42 q11 -7 15 2"/>
+  <circle cx="50" cy="46" r="7"/><line x1="50" y1="53" x2="50" y2="98"/>
+  <line x1="50" y1="62" x2="30" y2="76"/><line x1="50" y1="62" x2="70" y2="66"/>
+  <path d="M24 72 q6 -5 12 0 l-2 11 q-4 3 -8 0 Z"/>
+  <path d="M64 60 q6 -5 12 0 l-2 11 q-4 3 -8 0 Z"/>
+  <path d="M34 78 q10 6 22 -6"/>
+  <line x1="50" y1="98" x2="42" y2="118"/><line x1="50" y1="98" x2="58" y2="118"/>`,
+/*15 悪魔*/ `<circle cx="50" cy="44" r="8"/><path d="M42 37 q2 -9 -2 -11"/><path d="M58 37 q-2 -9 2 -11"/>
+  <line x1="50" y1="52" x2="50" y2="92"/>
+  <line x1="50" y1="60" x2="28" y2="72"/><line x1="50" y1="60" x2="72" y2="72"/>
+  <circle cx="25" cy="102" r="4"/><circle cx="75" cy="102" r="4"/>
+  <path d="M30 98 q10 5 0 10"/><path d="M70 98 q-10 5 0 10"/>`,
+/*16 塔*/ `<rect x="38" y="40" width="24" height="62"/>
+  <path d="M50 15 l-4 -10 M50 15 l4 -10 M50 15 l0 -13"/>
+  <path d="M44 40 l3 -7 l3 5 l3 -5 l3 7"/>
+  <circle cx="24" cy="30" r="4"/><line x1="24" y1="34" x2="18" y2="46"/>
+  <circle cx="76" cy="35" r="4"/><line x1="76" y1="39" x2="82" y2="50"/>`,
+/*17 星*/ `<circle cx="50" cy="24" r="9"/>
+  <line x1="50" y1="6" x2="50" y2="14"/><line x1="50" y1="34" x2="50" y2="42"/>
+  <line x1="32" y1="24" x2="40" y2="24"/><line x1="60" y1="24" x2="68" y2="24"/>
+  <circle cx="22" cy="42" r="3" fill="currentColor" stroke="none"/><circle cx="76" cy="48" r="3" fill="currentColor" stroke="none"/>
+  <circle cx="34" cy="62" r="2" fill="currentColor" stroke="none"/><circle cx="66" cy="66" r="2" fill="currentColor" stroke="none"/>
+  <circle cx="50" cy="82" r="6"/><line x1="50" y1="88" x2="45" y2="104"/><line x1="50" y1="88" x2="55" y2="104"/>
+  <line x1="50" y1="92" x2="34" y2="96"/><path d="M34 96 q-6 5 0 11"/>`,
+/*18 月*/ `<path d="M55 24 a12 12 0 1 0 0 24 a9 9 0 1 1 0 -24"/>
+  <rect x="15" y="68" width="12" height="32"/><rect x="73" y="68" width="12" height="32"/>
+  <path d="M8 106 q42 -16 84 0"/>
+  <path d="M42 100 l6 -10 l6 10 Z"/><path d="M56 100 l6 -10 l6 10 Z"/>`,
+/*19 太陽*/ `<circle cx="50" cy="35" r="16"/>
+  <line x1="50" y1="9" x2="50" y2="1"/><line x1="50" y1="61" x2="50" y2="69"/>
+  <line x1="24" y1="35" x2="16" y2="35"/><line x1="76" y1="35" x2="84" y2="35"/>
+  <line x1="31" y1="16" x2="25" y2="10"/><line x1="69" y1="16" x2="75" y2="10"/>
+  <line x1="31" y1="54" x2="25" y2="60"/><line x1="69" y1="54" x2="75" y2="60"/>
+  <circle cx="50" cy="92" r="6"/><line x1="50" y1="98" x2="50" y2="112"/>
+  <path d="M28 118 q22 -12 44 0"/>`,
+/*20 審判*/ `<path d="M35 20 l30 0 l10 8 l-50 0 Z"/>
+  <line x1="50" y1="10" x2="50" y2="2"/><line x1="40" y1="12" x2="34" y2="6"/><line x1="60" y1="12" x2="66" y2="6"/>
+  <rect x="35" y="98" width="30" height="12"/>
+  <circle cx="50" cy="72" r="7"/><line x1="50" y1="79" x2="50" y2="98"/>
+  <line x1="50" y1="82" x2="37" y2="64"/><line x1="50" y1="82" x2="63" y2="64"/>`,
+/*21 世界*/ `<ellipse cx="50" cy="70" rx="32" ry="44"/>
+  <circle cx="50" cy="54" r="7"/><line x1="50" y1="61" x2="50" y2="86"/>
+  <line x1="50" y1="68" x2="34" y2="54"/><line x1="50" y1="68" x2="66" y2="82"/>
+  <line x1="50" y1="86" x2="39" y2="102"/><line x1="50" y1="86" x2="63" y2="96"/>`,
+];
+
+function cardArt(card){
+  if(card.suit==='major') return wrapArt(MAJOR_ART[card.rankIdx]);
+  if(card.rankIdx<10) return pipArt(card.suit, card.rankIdx+1);
+  return courtArt(card.suit, card.rankIdx);
+}
+
+/* ============ Real card artwork (Rider-Waite-Smith, public domain) via sprite sheets ============ */
+const SPRITES = {
+  major:     { url:'sprites/sprite-major.jpg', cols:5, rows:5 },
+  wands:     { url:'sprites/sprite-wands.jpg', cols:4, rows:4 },
+  cups:      { url:'sprites/sprite-cups.jpg', cols:4, rows:4 },
+  swords:    { url:'sprites/sprite-swords.jpg', cols:4, rows:4 },
+  pentacles: { url:'sprites/sprite-pentacles.jpg', cols:4, rows:4 },
+};
+function cardBgStyle(card){
+  const sheet = SPRITES[card.suit];
+  const idx = card.rankIdx;
+  const col = idx % sheet.cols, row = Math.floor(idx / sheet.cols);
+  const posX = sheet.cols>1 ? (col/(sheet.cols-1))*100 : 0;
+  const posY = sheet.rows>1 ? (row/(sheet.rows-1))*100 : 0;
+  return `background-image:url('${sheet.url}');background-size:${sheet.cols*100}% ${sheet.rows*100}%;background-position:${posX}% ${posY}%;background-repeat:no-repeat;`;
+}
+
+/* ============ Persisted state ============ */
+const STORE_KEY = 'tarot-study-progress-v1';
+function loadStore(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return { mastered:{}, quiz:{correct:0,total:0} };
+    const parsed = JSON.parse(raw);
+    return { mastered: parsed.mastered||{}, quiz: parsed.quiz||{correct:0,total:0} };
+  }catch(e){ return { mastered:{}, quiz:{correct:0,total:0} }; }
+}
+function saveStore(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state.store)); }catch(e){}
+}
+
+const state = {
+  view:'browse',
+  filter:'all',
+  store: loadStore(),
+  flashDeck: [],
+  flashIndex: 0,
+  quizCard: null,
+  quizAnswered:false,
+};
+
+/* ============ Filters UI ============ */
+const filterDefs = [{key:'all', label:'すべて', color:'#c19a5b'}]
+  .concat(Object.keys(SUITS).map(k=>({key:k,label:SUITS[k].label,color:SUITS[k].color})));
+
+const filtersEl = document.getElementById('filters');
+filterDefs.forEach(f=>{
+  const b = document.createElement('button');
+  b.className = 'chip' + (f.key==='all' ? ' active':'');
+  b.style.setProperty('--dotc', f.color);
+  b.dataset.key = f.key;
+  b.innerHTML = `<span class="dot"></span>${f.label}`;
+  b.addEventListener('click', ()=>{
+    state.filter = f.key;
+    document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.key===f.key));
+    renderBrowse();
+    resetFlashDeck();
+  });
+  filtersEl.appendChild(b);
+});
+
+function filteredCards(){
+  return state.filter==='all' ? CARDS : CARDS.filter(c=>c.suit===state.filter);
+}
+
+/* ============ Tabs / views ============ */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    state.view = t.dataset.view;
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+state.view).classList.add('active');
+    if(state.view==='flash') { resetFlashDeck(); renderFlash(); }
+    if(state.view==='quiz') { newQuizQuestion(); }
+  });
+});
+
+/* ============ BROWSE render ============ */
+const gridEl = document.getElementById('grid');
+function renderBrowse(){
+  const list = filteredCards();
+  gridEl.innerHTML='';
+  const masteredCount = Object.keys(state.store.mastered).filter(id=>state.store.mastered[id]).length;
+  document.getElementById('browse-progress').innerHTML = `習得済み <b>${masteredCount}</b> / 78 枚`;
+
+  list.forEach(card=>{
+    const tile = document.createElement('div');
+    tile.className = 'tile' + (state.store.mastered[card.id] ? ' mastered':'');
+    tile.style.setProperty('--suitc', SUITS[card.suit].color);
+    tile.innerHTML = `
+      <div class="tile-inner">
+        <div class="tile-face tile-front">
+          <div class="mastered-badge">✓</div>
+          <div class="illus" style="${cardBgStyle(card)}"></div>
+          <div class="cap">
+            <div class="num">${card.numLabel}</div>
+            <div class="name">${card.name}</div>
+          </div>
+        </div>
+        <div class="tile-face tile-back">
+          <div class="bname">${card.name}</div>
+          <div class="sec">
+            <span class="lbl up">正位置</span>
+            <div class="kw">${card.up.join(' ・ ')}</div>
+          </div>
+          <div class="sec">
+            <span class="lbl rev">逆位置</span>
+            <div class="kw">${card.rev.join(' ・ ')}</div>
+          </div>
+          <button class="mk-btn">${state.store.mastered[card.id] ? '覚えた ✓' : '覚えた印をつける'}</button>
+        </div>
+      </div>`;
+    tile.addEventListener('click', (e)=>{
+      if(e.target.classList.contains('mk-btn')){
+        e.stopPropagation();
+        state.store.mastered[card.id] = !state.store.mastered[card.id];
+        saveStore();
+        tile.classList.toggle('mastered');
+        e.target.textContent = state.store.mastered[card.id] ? '覚えた ✓' : '覚えた印をつける';
+        document.getElementById('browse-progress').innerHTML =
+          `習得済み <b>${Object.keys(state.store.mastered).filter(id=>state.store.mastered[id]).length}</b> / 78 枚`;
+        return;
+      }
+      tile.classList.toggle('flipped');
+    });
+    gridEl.appendChild(tile);
+  });
+}
+
+/* ============ FLASHCARD ============ */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function resetFlashDeck(){
+  state.flashDeck = shuffle(filteredCards());
+  state.flashIndex = 0;
+}
+resetFlashDeck();
+
+const fcStage = document.getElementById('fc-stage');
+function currentFlashCard(){
+  if(state.flashDeck.length===0) return null;
+  return state.flashDeck[state.flashIndex % state.flashDeck.length];
+}
+function renderFlash(){
+  const card = currentFlashCard();
+  fcStage.classList.remove('flipped');
+  if(!card){
+    document.getElementById('fc-name').textContent = '該当カードなし';
+    document.getElementById('fc-tag').textContent = '';
+    document.getElementById('fc-num').textContent = '';
+    document.getElementById('fc-back').innerHTML='';
+    return;
+  }
+  document.getElementById('fc-tag').textContent = SUITS[card.suit].label.toUpperCase();
+  document.getElementById('fc-illus').setAttribute('style', cardBgStyle(card));
+  document.getElementById('fc-num').textContent = card.numLabel;
+  document.getElementById('fc-name').textContent = card.name;
+  document.getElementById('fc-front').style.setProperty('--suitc', SUITS[card.suit].color);
+  fcStage.style.setProperty('--suitc', SUITS[card.suit].color);
+
+  const back = document.getElementById('fc-back');
+  back.innerHTML = `
+    <div class="bname">${card.name}</div>
+    <div class="block">
+      <span class="lbl up">正位置</span>
+      <div class="kw">${card.up.join(' ・ ')}</div>
+      ${card.updesc ? `<div class="desc">${card.updesc}</div>`:''}
+    </div>
+    <div class="block">
+      <span class="lbl rev">逆位置</span>
+      <div class="kw">${card.rev.join(' ・ ')}</div>
+      ${card.revdesc ? `<div class="desc">${card.revdesc}</div>`:''}
+    </div>
+  `;
+  document.getElementById('fc-remaining').textContent = state.flashDeck.length;
+  document.getElementById('fc-mastered').textContent = Object.keys(state.store.mastered).filter(id=>state.store.mastered[id]).length;
+  document.getElementById('fc-master').classList.toggle('good', true);
+  document.getElementById('fc-master').textContent = state.store.mastered[card.id] ? '✓ 覚えた済み' : '✓ 覚えた';
+}
+fcStage.addEventListener('click', ()=> fcStage.classList.toggle('flipped'));
+document.getElementById('fc-next').addEventListener('click', ()=>{
+  state.flashIndex = (state.flashIndex+1) % Math.max(state.flashDeck.length,1);
+  renderFlash();
+});
+document.getElementById('fc-prev').addEventListener('click', ()=>{
+  state.flashIndex = (state.flashIndex-1+state.flashDeck.length) % Math.max(state.flashDeck.length,1);
+  renderFlash();
+});
+document.getElementById('fc-shuffle').addEventListener('click', ()=>{ resetFlashDeck(); renderFlash(); });
+document.getElementById('fc-master').addEventListener('click', ()=>{
+  const card = currentFlashCard();
+  if(!card) return;
+  state.store.mastered[card.id] = !state.store.mastered[card.id];
+  saveStore();
+  renderFlash();
+});
+
+/* ============ QUIZ ============ */
+function pickDistractors(correctCard, n=3){
+  const pool = CARDS.filter(c=>c.id!==correctCard.id);
+  return shuffle(pool).slice(0,n);
+}
+function newQuizQuestion(){
+  const pool = filteredCards();
+  if(pool.length < 4){
+    document.getElementById('q-name').textContent = 'このフィルターでは出題できません';
+    document.getElementById('q-options').innerHTML='';
+    return;
+  }
+  const card = pool[Math.floor(Math.random()*pool.length)];
+  const useReversed = Math.random() < 0.35;
+  state.quizCard = card;
+  state.quizAnswered = false;
+
+  document.getElementById('q-kicker').textContent = 'このカードのキーワードは？';
+  document.getElementById('q-illus').setAttribute('style', cardBgStyle(card));
+  document.getElementById('q-name').textContent = card.name;
+  document.getElementById('q-sub').textContent = useReversed ? '逆位置' : '正位置';
+  document.getElementById('q-sub').style.color = useReversed ? 'var(--danger)' : 'var(--good)';
+
+  const correctText = (useReversed ? card.rev : card.up).slice(0,2).join(' ・ ');
+  const distractorCards = pickDistractors(card, 3);
+  const options = shuffle([
+    { text: correctText, correct:true },
+    ...distractorCards.map(d=>({
+      text: (useReversed ? d.rev : d.up).slice(0,2).join(' ・ '),
+      correct:false
+    }))
+  ]);
+
+  const optsEl = document.getElementById('q-options');
+  optsEl.innerHTML='';
+  options.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className='opt';
+    b.textContent = opt.text;
+    b.addEventListener('click', ()=> answerQuiz(b, opt.correct, card, useReversed));
+    optsEl.appendChild(b);
+  });
+  document.getElementById('q-feedback').innerHTML='';
+  document.getElementById('q-next').style.display='none';
+}
+function answerQuiz(btn, correct, card, useReversed){
+  if(state.quizAnswered) return;
+  state.quizAnswered = true;
+  state.store.quiz.total++;
+  if(correct) state.store.quiz.correct++;
+  saveStore();
+  updateScorePill();
+
+  document.querySelectorAll('#q-options .opt').forEach(o=>{
+    o.disabled = true;
+    if(o===btn) o.classList.add(correct?'correct':'wrong');
+  });
+  if(!correct){
+    document.querySelectorAll('#q-options .opt').forEach(o=>{
+      const correctText = (useReversed?card.rev:card.up).slice(0,2).join(' ・ ');
+      if(o.textContent===correctText) o.classList.add('correct');
+    });
+  }
+  const desc = useReversed ? card.revdesc : card.updesc;
+  document.getElementById('q-feedback').innerHTML =
+    (correct ? '正解 — ' : '不正解 — ') + card.name + 'の' + (useReversed?'逆位置':'正位置') +
+    (desc ? `<span class="desc-line">${desc}</span>` : '');
+  document.getElementById('q-next').style.display='inline-flex';
+}
+function updateScorePill(){
+  const {correct,total} = state.store.quiz;
+  document.getElementById('q-correct').textContent = correct;
+  document.getElementById('q-total').textContent = total;
+  document.getElementById('q-rate').textContent = total ? Math.round(correct/total*100)+'%' : '–';
+}
+document.getElementById('q-next').addEventListener('click', newQuizQuestion);
+document.getElementById('q-reset').addEventListener('click', ()=>{
+  state.store.quiz = {correct:0,total:0};
+  saveStore();
+  updateScorePill();
+});
+
+/* ============ init ============ */
+renderBrowse();
+updateScorePill();
+</script>
+</body>
+</html>
